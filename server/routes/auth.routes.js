@@ -8,7 +8,7 @@ const router = new Router();
 router.post(
   "/registration",
   [
-    check("email", "Uncorrect email").isEmail,
+    check("email", "Uncorrect email").isEmail(),
     check("password", "Uncorrect password").isLength({ min: 3, max: 12 }),
   ],
   async (req, res) => {

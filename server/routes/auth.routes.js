@@ -1,8 +1,8 @@
 const Router = require("express");
 const User = require("../models/Users");
 const bcrypt = require("bcryptjs");
-const jwt = require('jsonwebtoken')
-const config = require('config');
+const jwt = require("jsonwebtoken");
+const config = require("config");
 const { check, validationResult } = require("express-validator");
 
 const router = new Router();
@@ -14,13 +14,11 @@ router.post(
     check("password", "Uncorrect password").isLength({ min: 3, max: 12 }),
   ],
   async (req, res) => {
-
     try {
-
-        const errors = validationResult(req)
-        if(!errors.isEmpty()) {
-            return res.status(400).json({message: "Uncorrect request", errors})
-        }
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ message: "Uncorrect request", errors });
+      }
       const { email, password } = req.body;
       const candidate = await User.findOne({ email });
 
@@ -41,38 +39,38 @@ router.post(
   }
 );
 
-router.post(
-  "/login", async (req, res) => {
-    try {
-      const { email, password } = req.body;
-      const user = await User.findOne({email})
+router.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
 
-      if(!user){
-        return res.status(404).json({message: "User not found"})
-      }
-
-      const isPassValid = bcrypt.compareSync(password, user.password)
-
-      if(!isPassValid) {
-        return res.status(404).json({message: "Invalid password"})
-      }
-      
-      const token = jwt.sign({id: user.id}, config.get("secretKey"), {expiresIn: "1h"})
-      return res.json({
-        token,
-        user: {
-          id: user.id,
-          email: user.email,
-          diskSpace: user.diskSpace,
-          usedSpace: user.usedSpace,
-          avatar: user.avatar
-        }
-      })
-    } catch (error) {
-      console.warn(error);
-      res.send({ message: "Server error" });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
-  }
-);
 
-module.exports = router
+    const isPassValid = bcrypt.compareSync(password, user.password);
+
+    if (!isPassValid) {
+      return res.status(404).json({ message: "Invalid password" });
+    }
+
+    const token = jwt.sign({ id: user.id }, config.get("secretKey"), {
+      expiresIn: "1h",
+    });
+    return res.json({
+      token,
+      user: {
+        id: user.id,
+        email: user.email,
+        diskSpace: user.diskSpace,
+        usedSpace: user.usedSpace,
+        avatar: user.avatar,
+      },
+    });
+  } catch (error) {
+    console.warn(error);
+    res.send({ message: "Server error" });
+  }
+});
+
+module.exports = router;

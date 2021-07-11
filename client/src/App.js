@@ -1,5 +1,11 @@
+import AppBar from "../src/components/Header/AppBar";
+
 function App() {
-  return <div>Start</div>;
+  return (
+    <div>
+      <AppBar />
+    </div>
+  );
 }
 
 export default App;

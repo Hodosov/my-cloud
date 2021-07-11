@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { Button, Grid, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { registration } from "../actions/user";
 
 const useStyles = makeStyles(() => ({
   wrapper: {
@@ -7,7 +9,7 @@ const useStyles = makeStyles(() => ({
     margin: "90px auto 0",
     maxWidth: 300,
     border: "1px solid #eee",
-    borderRadius: 20
+    borderRadius: 20,
   },
 
   field: {
@@ -17,6 +19,8 @@ const useStyles = makeStyles(() => ({
 
 export const LoginForm = () => {
   const classes = useStyles();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
     <Grid container alignItems="center" className={classes.wrapper}>
@@ -26,6 +30,7 @@ export const LoginForm = () => {
           fullWidth
           label="login"
           variant="outlined"
+          onChange={(e) => setEmail(e.target.value)}
         />
       </Grid>
       <Grid item xs={12}>
@@ -35,10 +40,15 @@ export const LoginForm = () => {
           label="password"
           variant="outlined"
           type="password"
+          onChange={(e) => setPassword(e.target.value)}
         />
       </Grid>
-      <Grid xs={12}>
-        <Button fullWidth variant="outlined">
+      <Grid item xs={12}>
+        <Button
+          fullWidth
+          variant="outlined"
+          onClick={() => registration(email, password)}
+        >
           Войти
         </Button>
       </Grid>

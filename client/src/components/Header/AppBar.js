@@ -6,6 +6,9 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import CloudQueueIcon from "@material-ui/icons/CloudQueue";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../reducers/userReducer";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -25,6 +28,8 @@ const useStyles = makeStyles(() => ({
 
 export default function AppHeader() {
   const classes = useStyles();
+  const isAuth = useSelector((state) => state.user.isAuth);
+  const dispatch = useDispatch()
 
   return (
     <div className={classes.root}>
@@ -36,8 +41,19 @@ export default function AppHeader() {
           <Typography variant="h6" className={classes.title}>
             My-cloud
           </Typography>
-          <Button>Auth</Button>
-          <Button>Login</Button>
+
+          {!isAuth ? (
+            <>
+              <Button component={Link} to="/registration">
+                Регистрация
+              </Button>
+              <Button component={Link} to="/login">
+                Войти
+              </Button>
+            </>
+          ) : (
+            <Button onClick={() => dispatch(logout())}>Выйти</Button>
+          )}
         </Toolbar>
       </AppBar>
     </div>

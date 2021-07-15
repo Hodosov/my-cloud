@@ -1,6 +1,11 @@
 import AppBar from "../src/components/Header/AppBar";
-import { LoginForm } from "./components/LoginForm";
+import { RegistrationForm } from "./components/RegistrationForm";
 import { makeStyles } from "@material-ui/core/styles";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { LoginForm } from "./components/LoginForm copy";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { auth } from "./actions/user";
 
 const useStyles = makeStyles(() => ({
   wrapper: {
@@ -11,11 +16,25 @@ const useStyles = makeStyles(() => ({
 function App() {
   const classes = useStyles();
 
+  const isAuth = useSelector((state) => state.user.isAuth);
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(auth())
+  }, [])
+
   return (
-    <div className={classes.wrapper}>
-      <AppBar />
-      <LoginForm />
-    </div>
+    <BrowserRouter>
+      <div className={classes.wrapper}>
+        <AppBar />
+      </div>
+      {!isAuth && (
+        <Switch>
+          <Route path="/registration" component={RegistrationForm} />
+          <Route path="/login" component={LoginForm} />
+        </Switch>
+      )}
+    </BrowserRouter>
   );
 }
 

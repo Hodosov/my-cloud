@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Grid, TextField } from "@material-ui/core";
+import { Button, Grid, TextField, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { registration } from "../actions/user";
 
@@ -17,13 +17,14 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export const LoginForm = () => {
+export const RegistrationForm = () => {
   const classes = useStyles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   return (
     <Grid container alignItems="center" className={classes.wrapper}>
+      <Typography>Регистрация</Typography>
       <Grid item xs={12}>
         <TextField
           className={classes.field}

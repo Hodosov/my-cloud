@@ -36,7 +36,6 @@ export const login = (email, password) => {
 
 export const auth = () => {
   return async (dispatch) => {
-    console.log(auth)
     try {
       const response = await axios.get(`http://localhost:5000/api/auth/auth`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}`},
@@ -44,7 +43,7 @@ export const auth = () => {
       dispatch(setUser(response.data.user));
       localStorage.setItem("token", response.data.token);
     } catch (error) {
-      console.log("error auth", error.response.data.message);
+      console.log("error auth");
       localStorage.removeItem("token");
     }
   };

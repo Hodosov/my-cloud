@@ -1,11 +1,12 @@
 import AppBar from "../src/components/Header/AppBar";
 import { RegistrationForm } from "./components/RegistrationForm";
 import { makeStyles } from "@material-ui/core/styles";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { LoginForm } from "./components/LoginForm";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { auth } from "./actions/user";
+import { Disk } from "../src/components/disk/Disk"
 
 const useStyles = makeStyles(() => ({
   wrapper: {
@@ -28,11 +29,17 @@ function App() {
       <div className={classes.wrapper}>
         <AppBar />
       </div>
-      {!isAuth && (
+      {!isAuth ? (
         <Switch>
           <Route path="/registration" component={RegistrationForm} />
           <Route path="/login" component={LoginForm} />
+          <Redirect to="/login" />
         </Switch>
+      ) : (
+        <Switch>
+        <Route exact path="/" component={Disk} />
+        <Redirect to="/" />
+      </Switch>
       )}
     </BrowserRouter>
   );
